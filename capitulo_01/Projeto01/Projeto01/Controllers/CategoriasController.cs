@@ -28,55 +28,53 @@ namespace Projeto01.Controllers
             return View();
         }
 
+        // POST: Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Categoria categoria)
         {
-            categoria.CategoriaId = 
-                categorias.Select(m => m.CategoriaId).Max() + 1;
             categorias.Add(categoria);
+            categoria.CategoriaId = categorias.Select(m => m.CategoriaId).Max() + 1;
             return RedirectToAction("Index");
         }
 
+        // GET: Edit
         public ActionResult Edit(long id)
         {
-            return View(categorias.
-                Where(m => m.CategoriaId == id).First());
+            return View(categorias.Where(m => m.CategoriaId == id).First());
         }
 
+        // POST: Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Categoria categoria)
+        public ActionResult Edit(Categoria categoria, long id)
         {
-            categorias[categorias.IndexOf(
-                categorias.Where(
-                    c => c.CategoriaId == categoria.CategoriaId).
-                    First())] = categoria;
-//            categorias.Remove(categorias.Where(c => c.CategoriaId == categoria.CategoriaId).First());
-//            categorias.Add(categoria);
+            categorias.Remove(categorias.Where(c => c.CategoriaId == id).First());
+            categorias.Add(categoria);
+            categoria.CategoriaId = id;
             return RedirectToAction("Index");
         }
 
+        // GET: Details
         public ActionResult Details(long id)
         {
-            return View(categorias.Where(m => m.CategoriaId == id)
-                .First());
+            return View(categorias.Where(m => m.CategoriaId == id).First());
         }
 
-        public ActionResult Delete(long id)
+        // GET: Delete
+        public ActionResult Delete()
         {
-            return View(categorias.Where(
-                m => m.CategoriaId == id).First());
+            return View();
         }
 
+        // POST: Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Categoria categoria)
+        public ActionResult Delete(Categoria categoria, long id)
         {
-            categorias.Remove(categorias.Where(
-                c => c.CategoriaId == categoria.CategoriaId).
-                First());
+            categorias.Remove(categorias.Where(c => c.CategoriaId == id).First());
             return RedirectToAction("Index");
         }
+
     }
 }
